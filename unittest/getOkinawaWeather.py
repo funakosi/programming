@@ -27,7 +27,7 @@ class WeatherAPI:
         print("{} done".format(city))
         print("")
 
-class AsyncWeahterAPI:
+class AsyncWeatherAPI:
     def __init__(self, city, data):
         self.city = city
         self.data = data
@@ -67,4 +67,4 @@ if __name__ == '__main__':
 
     print ("=== 非同期処理 ===")
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(AsyncWeahterAPI.exec(locations))
+    loop.run_until_complete(AsyncWeatherAPI.exec(locations))
