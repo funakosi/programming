@@ -193,8 +193,8 @@
 ```bash
 $ git remote add origin https://github.com/funakosi/myrepository.git
 $ git remote -v  #確認
-origin  git@github.com:funakosi/myrepository (fetch)
-origin  git@github.com:funakosi/myrepository (push)
+origin  https://github.com/funakosi/myrepository.git (fetch)
+origin  https://github.com/funakosi/myrepository.git (push)
 $ git push -u origin master #PUSHしてみる
 Warning: Permanently added the RSA host key for IP address '52.69.186.44' to the list of known hosts.
 git@github.com: Permission denied (publickey).
@@ -407,5 +407,105 @@ Fast-forward
  1 file changed, 1 insertion(+)
 $ cat sample.txt  #更新されていることを確認
 Hello World!
+```
+
+
+
+## 番外編
+
+- githubとのやり取りでメルアドやパスワードを入力するのが面倒な場合、ssh接続設定に変更する
+- 接続情報をクリアする
+
+```bash
+$ cd .ssh/
+~/.ssh$ ls
+config  id_rsa  id_rsa.pub  known_hosts
+~/.ssh$ rm id_rsa* #秘密鍵と公開鍵を削除
+~/.ssh$ ls
+config  known_hosts
+```
+
+- 上で作成したgithubのsshキー情報も削除
+  右上アイコン > Settings > SSH and GPG keys > 対象のキーを削除
+
+- 再度ssh鍵情報を作成
+
+```bash
+$ ssh-keygen -t rsa -C {Your Email Address on GitHub}
+Generating public/private rsa key pair.
+Enter file in which to save the key (/mnt/c/home/.ssh/id_rsa): id_rsa_github #入力後エンター
+Enter passphrase (empty for no passphrase): #パスフレーズ入力
+Enter same passphrase again:                #パスフレーズ入力
+Your identification has been saved in /mnt/c/home/.ssh/id_rsa.
+Your public key has been saved in /mnt/c/home/.ssh/id_rsa.pub.
+The key fingerprint is:
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXX@XXXXX.XXX
+The key's randomart image is:
+(省略)
+```
+
+- githubに公開鍵を登録
+- configの設定
+
+```bash
+~/.ssh$ cat config
+Host github
+  HostName github.com
+  IdentityFile ~/.ssh/id_rsa_github
+  User git
+```
+
+- 念のため秘密鍵やconfigファイルのパーミッションを変更しておく
+
+```bash
+$ chmod 600 ~/.ssh/id_rsa_github
+$ chmod 600 ~/.ssh/config
+```
+
+- 秘密鍵をssh-agentに登録（[こちら](https://qiita.com/0ta2/items/25c27d447378b13a1ac3)を参考）
+
+```bash
+~/.ssh$ eval "$(ssh-agent -s)"
+Agent pid 328
+~/.ssh$ ssh-add /Users/ts/.ssh/id_rsa_github
+Enter passphrase for /Users/ts/.ssh/id_rsa_github: # 鍵のpassword入力
+Identity added: id_rsa_github (id_rsa_github)
+```
+
+- 接続確認
+
+```bash
+$ ssh -T git@github.com
+Hi funakosi! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+- remote情報の書き換え
+  my_project のリポジトリに移動し、情報を確認
+
+```bash
+$ cd {FULLPATH TO MY_PROJECT}
+$ git remote -v  #確認
+origin  https://github.com/funakosi/myrepository.git (fetch)
+origin  https://github.com/funakosi/myrepository.git (push)
+```
+
+- これをSSHのURLに変更する（各リポジトリの Clone or download ボタンから参照）
+  ![1566807761864](./resources/1566807761864.png)
+
+```bash
+$ git remote set-url origin git@github.com:funakosi/myrepository.git
+$ git remote -v
+origin  git@github.com:funakosi/myrepository.git (fetch)
+origin  git@github.com:funakosi/myrepository.git (push)
+```
+
+- 確認
+  メルアドやパスワードなしでも実行可能となった
+
+```bash
+$ git pull origin master
+From github.com:funakosi/myrepository
+ * branch            master     -> FETCH_HEAD
+Already up to date.
 ```
 
