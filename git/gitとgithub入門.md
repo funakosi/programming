@@ -467,8 +467,8 @@ $ chmod 600 ~/.ssh/config
 ```bash
 ~/.ssh$ eval "$(ssh-agent -s)"
 Agent pid 328
-~/.ssh$ ssh-add /Users/ts/.ssh/id_rsa_github
-Enter passphrase for /Users/ts/.ssh/id_rsa_github: # 鍵のpassword入力
+~/.ssh$ ssh-add id_rsa_github
+Enter passphrase for id_rsa_github: # 鍵のpassword入力
 Identity added: id_rsa_github (id_rsa_github)
 ```
 
