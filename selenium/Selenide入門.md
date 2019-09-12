@@ -7,7 +7,7 @@ Seleniumラッパーの１つであるSelenideの環境構築手順とGitHubに�
 ## 前提条件
 
 - EclipseでJavaのコードを作成し実行できる環境が整っていること
-  - まだこの環境を構築していない場合は、[こちらのサイト]([https://github.com/funakosi/programming/blob/master/selenium/Eclipse%E3%81%A7Selenium%20(%E5%88%9D%E6%AD%A9%E3%81%AE%E5%88%9D%E6%AD%A9).md](https://github.com/funakosi/programming/blob/master/selenium/EclipseでSelenium (初歩の初歩).md)等を参考に構築しておくこと
+  - まだこの環境を構築していない場合は、[こちらのサイト](https://github.com/funakosi/programming/blob/master/selenium/Eclipse%E3%81%A7Selenium%20(%E5%88%9D%E6%AD%A9%E3%81%AE%E5%88%9D%E6%AD%A9).md)等を参考に構築しておくこと
   - 必須ではないが、Seleniumの基本的な動作方法を把握していること
     こちらも上で紹介したリンクに記載済なので、一通り目を通し確認しておくこと
 - 実行環境は、Windows10
@@ -51,6 +51,7 @@ Mavenをインストールし各種設定を行う。この手順は「[【超�
 - Eclipseを起動し、メニューのファイル > インポート
 - インポートウィザードから Maven > 既存Mavenプロジェクトを選択し次へ
 - ルートディレクトリに先ほど保存したワークスペースフォルダ内にある「codezine-sample-master」を指定し完了（プロジェクトエクスプローラーには下のように表示される）
+
 ![1568165413563](./resources/1568165413563.png)
 
 - プロジェクトに「geckodriver.exe」を登録する
@@ -58,6 +59,7 @@ Mavenをインストールし各種設定を行う。この手順は「[【超�
   - [mozillaが公開しているサイト](https://github.com/mozilla/geckodriver)からドライバを取得
   - geckodriver.exe を上の exe フォルダにドラッグ＆ドロップでコピーする
   - 結果以下のようになる
+
 ![1568165676151](./resources/1568165676151.png)
 
 ### 4. 動作確認
