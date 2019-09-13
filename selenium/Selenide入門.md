@@ -129,7 +129,148 @@ Mavenをインストールし各種設定を行う。この手順は「[【超�
 
 - コスト算出については「[こちら](https://github.com/SoftwareTestAutomationResearch/STARHOTEL-Teaching-Materials/blob/release/docs/TestCase.pdf)」を参照
 
+## 最初から作ってみる
 
+mvnコマンドとEclipseを併用して、１からプロジェクトを作成してみる。
+
+### 1. プロジェクトの作成
+
+- mvnコマンドを使用してプロジェクトを作成する
+- コマンドプロンプトで事前にEclipseのワークスペースフォルダに移動しておき、mvnコマンドを使用してプロジェクトを作成する。途中で何度か入力を促されるが、全部エンター押下で構わない。
+
+```
+$ mvn archetype:generate -DgroupId=com.selenide.sample -DartifactId=selenide-sample
+(ログ省略)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:20 min
+[INFO] Finished at: 2019-09-13T15:38:47+09:00
+[INFO] ------------------------------------------------------------------------
+$
+$ cd selenide-sample
+$ mvn idea:idea
+```
+
+
+
+### 2.Eclipseでインポート
+
+- Eclipseを起動しインポート
+  - ファイル > インポート > 既存 Mavenプロジェクト > 次へ
+  - 上で作成したプロジェクトのパスを指定 > 完了
+
+
+
+![1568357112705](./resources/1568357112705.png)
+
+
+
+### 3.Eclipseの設定
+
+#### Selenideを使用できるようにする
+
+- pom.xml の編集
+  - dependencies に selenideを追加
+
+[編集前（抜粋）]
+
+```xml
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+```
+
+[編集後（抜粋）]
+
+```xml
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.codeborne</groupId>
+        <artifactId>selenide</artifactId>
+        <version>4.9.1</version>
+    </dependency>
+```
+
+- 編集後に保存する
+
+#### Javaコンパイラを1.5に変更
+
+1. プロジェクトを選択
+2. コンテキストメニューから[プロパティ]を選択
+3. [Javaのビルドパス]を選択
+4. [ライブラリ]タブを選択
+5. 一覧[ビルドパス上のJARおよびクラスフォルダ]から[JREシステムライブラリ]を選択し[編集]をクリック
+6. システムライブラリから変更を行う
+
+#### Driverの設定
+
+- サンプルそーうを動作させたときと同様に、exe フォルダを作成し、そこに`geckodriver.exe` をコピー
+
+
+
+![1568358150309](./resources/1568358150309.png)
+
+
+
+### 4. コードの作成
+
+- デフォルトで App.java と AppTest.java が出来ているが、これはテスト用で使用するもののとして、別途ソースファイルを作成する
+- src/test/java以下のcom.selenide.sample を右クリック > 新規 > クラス
+  - 名前：SampleTest
+
+- コードの作成
+  - エラーが出ている場合は、そのエラー箇所（赤い波線が表示されている所）にマウスをあてると対処法が表示されます（～をインポートします等）ので、適宜対応していく
+
+```java
+package com.selenide.sample;
+
+import org.junit.Test;
+
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
+
+public class SampleTest {
+
+	@Test
+	public void OpenSelenideSite() {
+		 Configuration.browser = WebDriverRunner.FIREFOX;
+	     final String PATH = "exe/geckodriver.exe";
+	     System.setProperty("webdriver.gecko.driver", PATH);
+
+	     Selenide.open("http://selenide.org");
+	}
+}
+```
+
+
+
+### 5. 動作確認
+
+- ソースコード上で右クリック > 実行 > JUnitテスト をクリック
+
+  - もしくはコマンドプロンプトでプロジェクトフォルダ内に移動した後 `mvn test`としてもテストは実行される
+
+  - `mvn test`だと全てのテストが実行されるので、上で作成したテストだけを実行したい場合には以下のようにコマンドを入力し実行する
+
+    ```
+    $ mvn test -Dtest=SampleTest#OpenSelenideSite
+    ```
+
+- FireFoxが起動し、Selenideのサイトへ遷移後に閉じる
 
 
 
