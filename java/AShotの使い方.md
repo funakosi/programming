@@ -3,7 +3,7 @@
 ## AShotとは
 - AShotを使用すればブラウザのするスクリーンショットを簡単に取得することができる
 - 公式ドキュメントは[こちら](https://github.com/pazone/ashot)
-
+- [参考にしたサイト](https://qiita.com/hainet/items/423732f075d523f06d25)
 ## 使い方
 1. POMファイルに以下を追加
     ```xml
