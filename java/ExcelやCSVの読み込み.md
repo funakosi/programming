@@ -8,9 +8,9 @@
 
 - 使用するデータ
 
-1. エクセル読み込みで使用するファイル　 [example.xlsx](data\example.xlsx) (196KB)（一部郵便番号データを使用）
+1. エクセル読み込みで使用するファイル　 [example.xlsx](https://github.com/funakosi/programming/blob/master/java/data/example.xlsx) (196KB)（一部郵便番号データを使用）
 
-2. CSV読み込みで使用するファイル　 [KEN_ALL.CSV](data\KEN_ALL.CSV) (18MB)（公開されている郵便番号のデータ）
+2. CSV読み込みで使用するファイル　 [KEN_ALL.CSV](https://github.com/funakosi/programming/blob/master/java/data/KEN_ALL.CSV) (18MB)（公開されている郵便番号のデータ）
 
 
 
@@ -29,7 +29,7 @@
 ```
 
 - 読み込むシートは以下（Listシート）
-![list](./data\list.png)
+![list](./data/list.png)
 
 - エクセルデータに対応するクラスを作成
 
@@ -149,7 +149,7 @@ public void test01() {
 - 次にもう少し大きめのシートを読み込む
   - これは愛媛の郵便番号の一覧（参考：1752行、15列、サイズ：196KB）
 
-![zip38](./data\zip38.png)
+![zip38](./data/zip38.png)
 
 - 前回と同様に読み込むためのクラスを作成して実際に読み込む
 
@@ -339,7 +339,7 @@ public void test03() {
 
 - 読み込むシートは全国の郵便番号データ！(12万行、18MB)
 
-![image-20200414163635480](./data\zipall.png)
+![image-20200414163635480](./data/zipall.png)
 
 - クラスは上で掲載した ```Zip class```
 - 読み込み用のコード
