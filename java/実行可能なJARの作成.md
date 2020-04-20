@@ -33,3 +33,104 @@
 
 
 ということで手詰まりになったので、いったん塩漬け。
+
+## 追記(2020/04/20)
+
+- 一応 jar にした後にユニットテストを実行できる方法を見つけたので追記。ただし上記しているような考え方とは少し違い、Mainクラスの方でテストを実行するという考えで実装してみた。
+
+- pom.xml の junitのスコープを削除
+  - これをやらないと後々エラーとなる
+
+【修正前】
+
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+    <scope>test</scope>
+</dependency>
+```
+
+【修正後】
+
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+</dependency>
+```
+
+- selenideのサンプルを流用するのでpomに以下を追加しておく
+
+```xml
+<dependency>
+    <groupId>com.codeborne</groupId>
+    <artifactId>selenide</artifactId>
+    <version>4.9.1</version>
+</dependency>
+```
+
+- テストクラスを作成
+  - ※src/main/java以下に作成
+
+```java
+package com.selenide.sample;
+
+import static com.codeborne.selenide.Selenide.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import java.util.logging.Logger;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
+
+public class SampleTest {
+	private final static Logger log = Logger.getLogger(SampleTest.class.getName());
+	@Before
+	public void setUp() {
+		Configuration.browser = WebDriverRunner.FIREFOX;
+	    final String PATH = "exe/geckodriver.exe";
+	    System.setProperty("webdriver.gecko.driver", PATH);
+	}
+	@Test
+	public void test() {
+		open("http://example.selenium.jp/reserveApp/");
+		$("#reserve_day").val("22"); #※ここは当日日付以降の日を指定すること!
+		$("#guestname").val("山田　太郎");
+		$("#goto_next").click();
+		$("#commit").click();
+		assertThat($(By.tagName("h1")).getText(),is("予約を完了しました。"));
+		sleep(2000);
+		log.info("test01..pass");
+	}
+}
+```
+
+- Mainクラスでテストを呼び出す
+
+```jara
+package com.selenide.sample;
+
+public class Main
+{
+    public static void main( String[] args )
+    {
+        SampleTest test = new SampleTest();
+        test.test();
+    }
+}
+```
+
+- これでMainクラスを実行するとテストが実行される
+- Eclipseから実行可能なjarを作成する
+  - 以下では「sample.jar」という名前で作成したことを前提に説明している
+- コマンドプロントから以下を実行することでテストが実行される
+
+```
+> >java -jar sample.jar
+```
+
